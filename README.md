@@ -1,73 +1,123 @@
-# Welcome to your Lovable project
+# Supabase Connect Portfolio
 
-## Project info
+A modern developer portfolio built with React, TypeScript, Vite, and Tailwind CSS, with contact form submissions handled through Supabase Edge Functions.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Features
 
-## How can I edit this code?
+- Single-page portfolio with sections for hero, about, skills, projects, experience, and contact
+- Smooth UI animations with Framer Motion
+- Reusable UI components based on Radix UI + shadcn/ui patterns
+- Contact form wired to Supabase Edge Function (`contact-form`)
+- Client-side routing with React Router
+- Basic test setup with Vitest and Testing Library
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- React 18 + TypeScript
+- Vite 5
+- Tailwind CSS
+- Supabase JavaScript client (`@supabase/supabase-js`)
+- TanStack Query
+- Vitest
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## Project Structure
 
-Changes made via Lovable will be committed automatically to this repo.
+```text
+src/
+  components/              # UI and page sections
+  data/                    # Portfolio content data
+  integrations/supabase/   # Supabase client setup
+  pages/                   # Route-level pages
+  test/                    # Test setup and sample test
+```
 
-**Use your preferred IDE**
+## Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- Node.js 18+ (or Bun)
+- A Supabase project
+- A deployed Supabase Edge Function named `contact-form`
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Environment Variables
 
-Follow these steps:
+Create a `.env` file in the project root with:
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+```env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Notes:
 
-# Step 3: Install the necessary dependencies.
-npm i
+- The app reads these values in `src/integrations/supabase/client.ts`.
+- `VITE_` prefix is required for values exposed to the Vite frontend.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+## Install and Run
+
+### Using npm
+
+```bash
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Using Bun
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+bun install
+bun run dev
+```
 
-**Use GitHub Codespaces**
+Open `http://localhost:5173` after the dev server starts.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Available Scripts
 
-## What technologies are used for this project?
+- `npm run dev` - Start development server
+- `npm run build` - Build production bundle
+- `npm run build:dev` - Build in development mode
+- `npm run preview` - Preview production build locally
+- `npm run lint` - Run ESLint
+- `npm run test` - Run tests once
+- `npm run test:watch` - Run tests in watch mode
 
-This project is built with:
+## Supabase Edge Function Contract
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+The contact form invokes:
 
-## How can I deploy this project?
+- Function name: `contact-form`
+- Invocation: `supabase.functions.invoke("contact-form", { body: formData })`
+- Expected payload shape:
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+```json
+{
+  "name": "string",
+  "email": "string",
+  "message": "string"
+}
+```
 
-## Can I connect a custom domain to my Lovable project?
+Ensure your edge function is deployed and handles CORS for your frontend origin.
 
-Yes, you can!
+## Build and Deploy
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+1. Configure `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in your deployment environment.
+2. Build the app:
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+```bash
+npm run build
+```
+
+3. Deploy the generated `dist/` folder to your hosting provider (Vercel, Netlify, Cloudflare Pages, etc.).
+
+## Troubleshooting
+
+- `Failed to send message. Please try again.`
+  - Verify `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` values.
+  - Confirm `contact-form` edge function is deployed and reachable.
+  - Check Supabase function logs for runtime errors.
+- Blank page or build errors:
+  - Run `npm run lint` and `npm run test`.
+  - Remove `node_modules` and reinstall dependencies.
+
+## License
+
+This project is private by default (`"private": true` in `package.json`). Add a license section if you plan to publish it publicly.
