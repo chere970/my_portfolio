@@ -40,6 +40,7 @@ const Navbar = () => {
             <a
               href="https://drive.google.com/file/d/1kbyQG0XUfrROHdtMC6CYxo2S0eLhzhcn/view?usp=drive_link"
               target="_blank"
+              rel="noopener noreferrer"
               className="text-sm px-4 py-2 rounded-md bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
             >
               Resume
@@ -79,6 +80,7 @@ const Navbar = () => {
                 <a
                   href="https://drive.google.com/file/d/1kbyQG0XUfrROHdtMC6CYxo2S0eLhzhcn/view?usp=drive_link"
                   target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => setIsOpen(false)}
                   className="text-sm px-4 py-2 rounded-md bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
                 >
