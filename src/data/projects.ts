@@ -13,20 +13,19 @@ export const projects: Project[] = [
     description: "Full stack event platform with real-time updates, ticket management, and analytics dashboard.",
     tech: ["Next.js", "NestJS", "PostgreSQL", "Prisma"],
     github: "https://github.com/chere970/event-management",
-    demo: "https://events-demo.com",
   },
   {
     title: "Attendance Management System",
     description: "Automated attendance tracking with QR code scanning, reports generation, and admin dashboard.",
     tech: ["React", "Node.js", "MongoDB", "Express"],
     github: "https://github.com/chere970/attendance-system",
+    demo: "https://attendance-management-2y8y.vercel.app/",
   },
   {
     title: "Real-time Chat Application",
     description: "WebSocket-powered chat app with rooms, file sharing, and message encryption.",
     tech: ["React", "NestJS", "WebSocket", "Redis"],
     github: "https://github.com/chere970/chat-app",
-    demo: "https://chat-demo.com",
   },
   {
     title: "REST API Boilerplate",

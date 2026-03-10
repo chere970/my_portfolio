@@ -79,15 +79,16 @@ const Hero = () => {
             className="flex items-center justify-center gap-6"
           >
             {[
-              { icon: Github, href: "https://github.com/chere970" },
-              { icon: Linkedin, href: "https://www.linkedin.com/in/cherinet-kebede970" },
-              { icon: Mail, href: "mailto:cherinetkebede055@gmail.com" },
-            ].map(({ icon: Icon, href }) => (
+              { icon: Github, href: "https://github.com/chere970", label: "GitHub" },
+              { icon: Linkedin, href: "https://www.linkedin.com/in/cherinet-kebede970", label: "LinkedIn" },
+              { icon: Mail, href: "mailto:cherinetkebede055@gmail.com", label: "Email" },
+            ].map(({ icon: Icon, href, label }) => (
               <a
                 key={href}
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={label}
                 className="text-muted-foreground hover:text-primary transition-colors duration-300"
               >
                 <Icon size={22} />

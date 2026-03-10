@@ -8,9 +8,41 @@ const Contact = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({});
+
+  const validateForm = () => {
+    const newErrors: typeof errors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = "Name must be at least 2 characters";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required";
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = "Message must be at least 10 characters";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      toast.error("Please fix the errors in your form");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -22,6 +54,7 @@ const Contact = () => {
 
       setIsSubmitted(true);
       setFormData({ name: "", email: "", message: "" });
+      setErrors({});
       toast.success("Message sent successfully!");
 
       setTimeout(() => setIsSubmitted(false), 5000);
@@ -65,37 +98,61 @@ const Contact = () => {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4 text-left">
               <div className="grid sm:grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  placeholder="Your Name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors"
-                  required
-                  maxLength={100}
-                  disabled={isSubmitting}
-                />
-                <input
-                  type="email"
-                  placeholder="Your Email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors"
-                  required
-                  maxLength={255}
-                  disabled={isSubmitting}
-                />
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Your Name"
+                    value={formData.name}
+                    onChange={(e) => {
+                      setFormData({ ...formData, name: e.target.value });
+                      if (errors.name) setErrors({ ...errors, name: undefined });
+                    }}
+                    className={`w-full px-4 py-3 rounded-lg bg-secondary border text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${
+                      errors.name ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary/50"
+                    }`}
+                    required
+                    maxLength={100}
+                    disabled={isSubmitting}
+                  />
+                  {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                </div>
+                <div>
+                  <input
+                    type="email"
+                    placeholder="Your Email"
+                    value={formData.email}
+                    onChange={(e) => {
+                      setFormData({ ...formData, email: e.target.value });
+                      if (errors.email) setErrors({ ...errors, email: undefined });
+                    }}
+                    className={`w-full px-4 py-3 rounded-lg bg-secondary border text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${
+                      errors.email ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary/50"
+                    }`}
+                    required
+                    maxLength={255}
+                    disabled={isSubmitting}
+                  />
+                  {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                </div>
               </div>
-              <textarea
-                placeholder="Your Message"
-                rows={5}
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors resize-none"
-                required
-                maxLength={2000}
-                disabled={isSubmitting}
-              />
+              <div>
+                <textarea
+                  placeholder="Your Message"
+                  rows={5}
+                  value={formData.message}
+                  onChange={(e) => {
+                    setFormData({ ...formData, message: e.target.value });
+                    if (errors.message) setErrors({ ...errors, message: undefined });
+                  }}
+                  className={`w-full px-4 py-3 rounded-lg bg-secondary border text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors resize-none ${
+                    errors.message ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary/50"
+                  }`}
+                  required
+                  maxLength={2000}
+                  disabled={isSubmitting}
+                />
+                {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
+              </div>
               <button
                 type="submit"
                 disabled={isSubmitting}
