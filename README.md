@@ -1,4 +1,4 @@
-# Supabase Connect Portfolio
+# Connect Portfolio
 
 A modern developer portfolio built with React, TypeScript, Vite, and Tailwind CSS, with contact form submissions handled through Supabase Edge Functions.
 
