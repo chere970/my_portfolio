@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, Moon, Sun, X } from "lucide-react";
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -12,6 +13,11 @@ const navLinks = [
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { resolvedTheme, setTheme } = useTheme();
+
+  const toggleTheme = () => {
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
+  };
 
   return (
     <motion.nav
@@ -47,12 +53,22 @@ const Navbar = () => {
           </li>
         </ul>
 
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-foreground"
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-foreground transition-colors hover:bg-accent"
+          >
+            {resolvedTheme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden text-foreground"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
@@ -75,6 +91,23 @@ const Navbar = () => {
                   </a>
                 </li>
               ))}
+              <li>
+                <button
+                  type="button"
+                  onClick={toggleTheme}
+                  aria-label="Toggle theme"
+                  className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm text-foreground transition-colors hover:bg-accent"
+                >
+                  {resolvedTheme === "dark" ? (
+                    <Sun size={16} />
+                  ) : (
+                    <Moon size={16} />
+                  )}
+                  <span>
+                    {resolvedTheme === "dark" ? "Light mode" : "Dark mode"}
+                  </span>
+                </button>
+              </li>
             </ul>
           </motion.div>
         )}
