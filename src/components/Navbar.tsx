@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, Moon, Sun, X } from "lucide-react";
+import { resumeData } from "@/data/resume";
+import { downloadResumePdf } from "@/lib/resume-pdf";
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -17,6 +19,10 @@ const Navbar = () => {
 
   const toggleTheme = () => {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
+  };
+
+  const handleResumeDownload = async () => {
+    await downloadResumePdf(resumeData);
   };
 
   return (
@@ -43,13 +49,13 @@ const Navbar = () => {
             </li>
           ))}
           <li>
-            <a
-              href="https://drive.google.com/file/d/1kbyQG0XUfrROHdtMC6CYxo2S0eLhzhcn/view?usp=drive_link"
-              target="_blank"
+            <button
+              type="button"
+              onClick={handleResumeDownload}
               className="text-sm px-4 py-2 rounded-md bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
             >
               Resume
-            </a>
+            </button>
           </li>
         </ul>
 
@@ -91,6 +97,15 @@ const Navbar = () => {
                   </a>
                 </li>
               ))}
+              <li>
+                <button
+                  type="button"
+                  onClick={handleResumeDownload}
+                  className="text-sm px-4 py-2 rounded-md bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
+                >
+                  Resume
+                </button>
+              </li>
               <li>
                 <button
                   type="button"
