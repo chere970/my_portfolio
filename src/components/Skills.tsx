@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
-import { skillCategories } from "@/data/skills";
+import { useSiteContent } from "@/context/site-content-context";
 
 const Skills = () => {
+  const { content } = useSiteContent();
+
   return (
     <section id="skills" className="py-24 bg-secondary/30">
       <div className="container mx-auto px-6">
@@ -17,7 +19,7 @@ const Skills = () => {
           <div className="w-20 h-0.5 bg-primary/40 mb-10" />
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {skillCategories.map((cat, i) => (
+            {content.skillCategories.map((cat, i) => (
               <motion.div
                 key={cat.category}
                 initial={{ opacity: 0, y: 20 }}

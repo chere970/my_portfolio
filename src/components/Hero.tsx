@@ -1,7 +1,12 @@
 import { motion } from "framer-motion";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
+import { useSiteContent } from "@/context/site-content-context";
 
 const Hero = () => {
+  const { content } = useSiteContent();
+  const [firstName, ...restOfName] = content.hero.name.split(" ");
+  const lastName = restOfName.join(" ");
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-[linear-gradient(hsl(var(--primary)/0.03)_1px,transparent_1px),linear-gradient(90deg,hsl(var(--primary)/0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
@@ -20,7 +25,7 @@ const Hero = () => {
             transition={{ delay: 0.2 }}
             className="text-primary font-mono text-sm mb-4 tracking-widest uppercase"
           >
-            Hello, I'm
+            {content.hero.intro}
           </motion.p>
 
           <motion.h1
@@ -29,8 +34,8 @@ const Hero = () => {
             transition={{ delay: 0.3 }}
             className="text-5xl md:text-7xl font-bold mb-4 font-heading"
           >
-            <span className="text-foreground">Cherinet </span>
-            <span className="gradient-text">Kebede</span>
+            <span className="text-foreground">{firstName} </span>
+            <span className="gradient-text">{lastName || firstName}</span>
           </motion.h1>
 
           <motion.h2
@@ -39,7 +44,7 @@ const Hero = () => {
             transition={{ delay: 0.4 }}
             className="text-xl md:text-2xl text-muted-foreground mb-8 font-heading"
           >
-            Full Stack Developer
+            {content.hero.role}
           </motion.h2>
 
           <motion.p
@@ -48,8 +53,7 @@ const Hero = () => {
             transition={{ delay: 0.5 }}
             className="text-muted-foreground max-w-xl mx-auto mb-10 leading-relaxed"
           >
-            I build scalable web applications with modern technologies.
-            Passionate about clean code, great UX, and solving complex problems.
+            {content.hero.summary}
           </motion.p>
 
           <motion.div
@@ -62,13 +66,13 @@ const Hero = () => {
               href="#contact"
               className="px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-all neon-glow"
             >
-              Get In Touch
+              {content.hero.primaryCtaLabel}
             </a>
             <a
               href="#projects"
               className="px-6 py-3 rounded-lg border border-primary/30 text-primary hover:bg-primary/10 transition-all"
             >
-              View Work
+              {content.hero.secondaryCtaLabel}
             </a>
           </motion.div>
 
@@ -79,9 +83,9 @@ const Hero = () => {
             className="flex items-center justify-center gap-6"
           >
             {[
-              { icon: Github, href: "https://github.com/chere970" },
-              { icon: Linkedin, href: "https://www.linkedin.com/in/cherinet-kebede970" },
-              { icon: Mail, href: "mailto:cherinetkebede055@gmail.com" },
+              { icon: Github, href: content.hero.githubUrl },
+              { icon: Linkedin, href: content.hero.linkedinUrl },
+              { icon: Mail, href: `mailto:${content.hero.email}` },
             ].map(({ icon: Icon, href }) => (
               <a
                 key={href}
@@ -102,7 +106,10 @@ const Hero = () => {
           transition={{ delay: 1, duration: 1 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2"
         >
-          <a href="#about" className="text-muted-foreground hover:text-primary transition-colors animate-bounce block">
+          <a
+            href="#about"
+            className="text-muted-foreground hover:text-primary transition-colors animate-bounce block"
+          >
             <ArrowDown size={20} />
           </a>
         </motion.div>

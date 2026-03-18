@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
-import { projects } from "@/data/projects";
+import { useSiteContent } from "@/context/site-content-context";
 import ProjectCard from "./ProjectCard";
 
 const Projects = () => {
+  const { content } = useSiteContent();
+
   return (
     <section id="projects" className="py-24">
       <div className="container mx-auto px-6">
@@ -18,7 +20,7 @@ const Projects = () => {
           <div className="w-20 h-0.5 bg-primary/40 mb-10" />
 
           <div className="grid md:grid-cols-2 gap-6">
-            {projects.map((project, i) => (
+            {content.projects.map((project, i) => (
               <ProjectCard key={project.title} project={project} index={i} />
             ))}
           </div>
