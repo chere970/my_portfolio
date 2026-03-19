@@ -18,9 +18,12 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
       className="group p-6 rounded-xl glass neon-border transition-all duration-300 hover:border-primary/60"
     >
       <div className="flex items-start justify-between mb-4">
-        <h3 className="text-lg font-semibold text-foreground font-heading group-hover:text-primary transition-colors">
-          {project.title}
-        </h3>
+        <div>
+          <h3 className="text-lg font-semibold text-foreground font-heading group-hover:text-primary transition-colors">
+            {project.title}
+          </h3>
+          <p className="text-xs text-muted-foreground mt-1">{project.year}</p>
+        </div>
         <div className="flex items-center gap-3">
           <a
             href={project.github}
@@ -46,6 +49,17 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
       <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
         {project.description}
       </p>
+
+      <div className="flex flex-wrap gap-2 mb-4">
+        {project.tags.map((tag) => (
+          <span
+            key={tag}
+            className="text-xs px-2 py-1 rounded bg-accent/10 text-accent border border-accent/25"
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
 
       <div className="flex flex-wrap gap-2">
         {project.tech.map((t) => (
