@@ -1,91 +1,74 @@
 # Connect Portfolio
 
-A modern developer portfolio built with React, TypeScript, Vite, and Tailwind CSS, with contact form submissions handled through Supabase Edge Functions.
+A modern portfolio application built with React, TypeScript, Vite, Tailwind CSS, and Supabase.
 
-## Features
+It includes:
 
-- Single-page portfolio with sections for hero, about, skills, projects, experience, and contact
-- Smooth UI animations with Framer Motion
-- Reusable UI components based on Radix UI + shadcn/ui patterns
-- Contact form wired to Supabase Edge Function (`contact-form`)
-- Client-side routing with React Router
-- Basic test setup with Vitest and Testing Library
+- A single-page public portfolio (hero, about, skills, projects, experience, contact)
+- A contact form backed by a Supabase Edge Function
+- An internal admin editor route for updating site content in browser storage
 
 ## Tech Stack
 
 - React 18 + TypeScript
 - Vite 5
-- Tailwind CSS
+- Tailwind CSS + shadcn/ui style components
+- Framer Motion
 - Supabase JavaScript client (`@supabase/supabase-js`)
+- React Router
 - TanStack Query
-- Vitest
+- Vitest + Testing Library
 
-## Project Structure
+## Quick Start
 
-```text
-src/
-  components/              # UI and page sections
-  data/                    # Portfolio content data
-  integrations/supabase/   # Supabase client setup
-  pages/                   # Route-level pages
-  test/                    # Test setup and sample test
-```
-
-## Prerequisites
-
-- Node.js 18+ (or Bun)
-- A Supabase project
-- A deployed Supabase Edge Function named `contact-form`
-
-## Environment Variables
-
-Create a `.env` file in the project root with:
-
-```env
-VITE_SUPABASE_URL=your_supabase_project_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
-
-Notes:
-
-- The app reads these values in `src/integrations/supabase/client.ts`.
-- `VITE_` prefix is required for values exposed to the Vite frontend.
-
-## Install and Run
-
-### Using npm
+1. Install dependencies:
 
 ```bash
 npm install
+```
+
+2. Create a `.env` file in the project root:
+
+```env
+VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+VITE_ADMIN_EDITOR_PASSCODE=change-this-in-local-and-prod
+```
+
+3. Start the app:
+
+```bash
 npm run dev
 ```
 
-### Using Bun
+4. Open `http://localhost:5173`.
 
-```bash
-bun install
-bun run dev
-```
+## Routes
 
-Open `http://localhost:5173` after the dev server starts.
+- `/` - Public portfolio page
+- `/internal/admin` - Internal content editor
 
-## Available Scripts
+The admin editor requires a passcode (`VITE_ADMIN_EDITOR_PASSCODE`).
+If this env var is missing, the app falls back to a default passcode (`change-me`), which is not secure for production.
 
-- `npm run dev` - Start development server
-- `npm run build` - Build production bundle
-- `npm run build:dev` - Build in development mode
-- `npm run preview` - Preview production build locally
-- `npm run lint` - Run ESLint
-- `npm run test` - Run tests once
-- `npm run test:watch` - Run tests in watch mode
+## Environment Variables
 
-## Supabase Edge Function Contract
+- `VITE_SUPABASE_URL`
+  - Supabase project URL
+- `VITE_SUPABASE_ANON_KEY`
+  - Supabase anon/public key used by the frontend client
+- `VITE_ADMIN_EDITOR_PASSCODE`
+  - Passcode for `/internal/admin`
 
-The contact form invokes:
+All frontend-exposed variables must start with `VITE_`.
+
+## Contact Form Integration
+
+The contact section invokes this Edge Function:
 
 - Function name: `contact-form`
-- Invocation: `supabase.functions.invoke("contact-form", { body: formData })`
-- Expected payload shape:
+- Client call: `supabase.functions.invoke("contact-form", { body: formData })`
+- Payload:
 
 ```json
 {
@@ -95,29 +78,56 @@ The contact form invokes:
 }
 ```
 
-Ensure your edge function is deployed and handles CORS for your frontend origin.
+Make sure the function is deployed and CORS is configured for your frontend origin.
 
-## Build and Deploy
+## Scripts
 
-1. Configure `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in your deployment environment.
-2. Build the app:
+- `npm run dev` - Start development server
+- `npm run build` - Build production bundle
+- `npm run build:dev` - Build using development mode
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+- `npm run test` - Run tests once
+- `npm run test:watch` - Run tests in watch mode
+
+## Project Structure
+
+```text
+src/
+  components/              # Section components and shared UI
+  context/                 # Site content context and persistence
+  data/                    # Seed/default portfolio content
+  integrations/supabase/   # Supabase client setup
+  pages/                   # Route pages (public + admin)
+  test/                    # Test setup and examples
+```
+
+## Deployment Notes
+
+1. Set all required `VITE_` environment variables in your hosting platform.
+2. Build with:
 
 ```bash
 npm run build
 ```
 
-3. Deploy the generated `dist/` folder to your hosting provider (Vercel, Netlify, Cloudflare Pages, etc.).
+3. Deploy the generated `dist/` directory.
+4. Ensure the Supabase `contact-form` function is reachable from the deployed origin.
 
 ## Troubleshooting
 
-- `Failed to send message. Please try again.`
-  - Verify `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` values.
-  - Confirm `contact-form` edge function is deployed and reachable.
-  - Check Supabase function logs for runtime errors.
-- Blank page or build errors:
-  - Run `npm run lint` and `npm run test`.
-  - Remove `node_modules` and reinstall dependencies.
+- Contact form shows `Failed to send message. Please try again.`
+  - Check `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`
+  - Verify `contact-form` is deployed
+  - Inspect Supabase Edge Function logs
+- Admin editor cannot unlock
+  - Verify `VITE_ADMIN_EDITOR_PASSCODE` value in your runtime environment
+  - Restart dev server after changing `.env`
+- Build/runtime issues
+  - Run `npm run lint`
+  - Run `npm run test`
+  - Reinstall dependencies if needed
 
 ## License
 
-This project is private by default (`"private": true` in `package.json`). Add a license section if you plan to publish it publicly.
+This project is marked private in `package.json`.
