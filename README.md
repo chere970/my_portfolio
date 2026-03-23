@@ -68,7 +68,6 @@ The contact section invokes this Edge Function:
 
 - Function name: `contact-form`
 - Client call: `supabase.functions.invoke("contact-form", { body: formData })`
-- Behavior: sends an automatic success confirmation email to the visitor
 - Payload:
 
 ```json
@@ -80,36 +79,6 @@ The contact section invokes this Edge Function:
 ```
 
 Make sure the function is deployed and CORS is configured for your frontend origin.
-
-### Edge Function Setup (Auto-Responder)
-
-Create and deploy the function in your Supabase project:
-
-```bash
-supabase functions deploy contact-form
-```
-
-Set function secrets (used by the Edge Function at runtime):
-
-```bash
-supabase secrets set RESEND_API_KEY=your_resend_api_key
-supabase secrets set AUTORESPONDER_FROM_EMAIL="Portfolio <onboarding@resend.dev>"
-supabase secrets set AUTORESPONDER_REPLY_TO=your-email@example.com
-```
-
-Required secrets:
-
-- `RESEND_API_KEY`
-- `AUTORESPONDER_FROM_EMAIL`
-
-Optional secrets:
-
-- `AUTORESPONDER_REPLY_TO`
-
-Notes:
-
-- `AUTORESPONDER_FROM_EMAIL` must use a sender/domain verified in your email provider (Resend).
-- Keep all Edge Function secrets out of frontend `.env` files.
 
 ## Scripts
 
@@ -144,14 +113,12 @@ npm run build
 
 3. Deploy the generated `dist/` directory.
 4. Ensure the Supabase `contact-form` function is reachable from the deployed origin.
-5. Ensure Edge Function secrets are set in Supabase (`RESEND_API_KEY`, `AUTORESPONDER_FROM_EMAIL`).
 
 ## Troubleshooting
 
 - Contact form shows `Failed to send message. Please try again.`
   - Check `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`
   - Verify `contact-form` is deployed
-  - Verify `RESEND_API_KEY` and `AUTORESPONDER_FROM_EMAIL` are set in Supabase secrets
   - Inspect Supabase Edge Function logs
 - Admin editor cannot unlock
   - Verify `VITE_ADMIN_EDITOR_PASSCODE` value in your runtime environment
