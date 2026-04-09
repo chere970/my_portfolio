@@ -7,6 +7,7 @@ import Experience from "@/components/Experience";
 import Notes from "@/components/Notes";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 
 const Index = () => {
   return (
@@ -20,6 +21,7 @@ const Index = () => {
       <Notes />
       <Contact />
       <Footer />
+      <ScrollToTopButton />
     </div>
   );
 };
